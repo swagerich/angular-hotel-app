@@ -1,0 +1,112 @@
+<p-dialog
+  [(visible)]="displayAddEditModal"
+  [style]="{ width: '500px' }"
+  [header]="selectedClient ? 'Edit Client' : 'Add Client'"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="closeModal()"
+>
+  <ng-template pTemplate="client">
+    <form [formGroup]="clientsForms">
+      <!-- <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-3" *ngIf="product.image" /> -->
+      <div class="field">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          pInputText
+          id="name"
+          formControlName="name"
+          autofocus
+        />
+        <small class="p-error" *ngIf="this.clientsForms.get('name')?.invalid && this.clientsForms.get('name')?.dirty"
+          >Name is required.</small
+        >
+      </div>
+      <div class="field">
+        <label for="phone">phone</label>
+        <input
+          type="text"
+          pInputText
+          id="phone"
+          formControlName="phone"
+          autofocus
+        />
+        <small class="p-error" *ngIf="this.clientsForms.get('phone')?.invalid && this.clientsForms.get('phone')?.dirty"
+        >Phone is required.</small
+      >
+      </div>
+      <div class="field">
+        <label for="email">email</label>
+        <input
+          type="text"
+          pInputText
+          id="email"
+          formControlName="email"
+          autofocus
+        />
+        <small class="p-error" *ngIf="this.clientsForms.get('email')?.invalid && this.clientsForms.get('email')?.dirty"
+        >Email is required.</small
+      >
+      </div>
+      <div class="field">
+        <label for="gender">gender</label>
+        <p-dropdown
+          [options]="genders"
+          formControlName="gender"
+          [showClear]="true"
+          placeholder="Select a Gender"
+        ></p-dropdown>
+      </div>
+      <small class="p-error" *ngIf="this.clientsForms.get('gender')?.invalid && this.clientsForms.get('gender')?.dirty"
+      >Gender is required.</small
+    >
+      <div class="field">
+        <label for="dni">dni</label>
+        <input
+          type="text"
+          pInputText
+          id="dni"
+          formControlName="dni"
+          autofocus
+        />
+      </div>
+      <small class="p-error" *ngIf="this.clientsForms.get('dni')?.invalid && this.clientsForms.get('dni')?.dirty"
+      >Dni is required.</small
+    >
+
+      <div class="field">
+        <label for="dni">Category</label>
+        <p-dropdown
+          [options]="categories"
+          formControlName="category"
+          [showClear]="true"
+          placeholder="Select a Categories"
+        ></p-dropdown>
+      </div>
+      <small class="p-error" *ngIf="this.clientsForms.get('category')?.invalid && this.clientsForms.get('category')?.dirty"
+      >Category is required.</small
+    >
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="closeModal()"
+      icon="pi pi-check"
+      label="Cancel"
+      pAutoFocus
+      [autofocus]="true"
+      class="p-mr-2"
+    ></p-button>
+
+    <p-button
+      (click)="addEditClient()"
+      icon="pi pi-check"
+      [label]="selectedClient ? 'Edit' : 'Add'"
+      pAutoFocus
+      [autofocus]="true"
+      [disabled]="clientsForms.invalid"
+      class="p-mr-2"
+    ></p-button>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,61 @@
+<p-dialog
+  [(visible)]="displayAddEditModal"
+  [style]="{ width: '500px' }"
+  [header]="selectedRoomType ? 'Edit Client' : 'Add Client'"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="closeModal()"
+>
+  <ng-template pTemplate="room-type">
+    <form [formGroup]="formRoomType">
+      <!-- <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-3" *ngIf="product.image" /> -->
+      <div class="field">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          pInputText
+          id="name"
+          formControlName="name"
+          autofocus
+        />
+        <small class="p-error" *ngIf="this.formRoomType.get('name')?.invalid && this.formRoomType.get('name')?.dirty"
+          >Name is required.</small
+        >
+      </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <input
+          type="text"
+          pInputText
+          id="description"
+          formControlName="description"
+          autofocus
+        />
+        <small class="p-error" *ngIf="this.formRoomType.get('description')?.invalid && this.formRoomType.get('description')?.dirty"
+        >Description is required.</small
+      >
+        </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="closeModal()"
+      icon="pi pi-check"
+      label="Cancel"
+      pAutoFocus
+      [autofocus]="true"
+      class="p-mr-2"
+    ></p-button>
+
+    <p-button
+      (click)="addEditRoomType()"
+      icon="pi pi-check"
+      [label]="selectedRoomType ? 'Edit' : 'Add'"
+      pAutoFocus
+      [autofocus]="true"
+      [disabled]="formRoomType.invalid"
+      class="p-mr-2"
+    ></p-button>
+  </ng-template>
+</p-dialog>
