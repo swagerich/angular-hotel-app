@@ -1,0 +1,134 @@
+<p-dialog
+  [(visible)]="displayAddEditModal"
+  [style]="{ width: '500px' }"
+  [header]="selectedRoom ? 'Edit Room' : 'Add Room'"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="closeModal()"
+>
+  <ng-template pTemplate="room">
+    <form [formGroup]="formRoom">
+      <!-- <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-3" *ngIf="product.image" /> -->
+      <div class="field">
+        <label for="roomNumber">Room Number</label>
+        <input
+        pInputText 
+        pKeyFilter="num"
+        id="roomNumber"
+        formControlName="roomNumber"
+        autofocus
+        />
+        <small
+          class="p-error"
+          *ngIf="
+            this.formRoom.get('roomNumber')?.invalid &&
+            this.formRoom.get('roomNumber')?.dirty
+          "
+          >Room Number is required.</small
+        >
+      </div>
+      <div class="field">
+        <label for="price">Price</label>
+        <p-inputNumber
+          inputId="integeronly"
+          autofocus
+          formControlName="price"
+        ></p-inputNumber>
+        <small
+          class="p-error"
+          *ngIf="
+            this.formRoom.get('price')?.invalid &&
+            this.formRoom.get('price')?.dirty
+          "
+          >Price is required.</small
+        >
+      </div>
+
+      <div class="field">
+        <label for="capacity">Capacity</label>
+        <input
+        pInputText 
+        pKeyFilter="num"
+        formControlName="capacity"
+        autofocus
+        />
+        <small
+          class="p-error"
+          *ngIf="
+            this.formRoom.get('capacity')?.invalid &&
+            this.formRoom.get('capacity')?.dirty
+          "
+          >Capacity is required.</small
+        >
+      </div>
+      
+      <!-- <div class="field">
+        <label for="status">Status</label>
+        <input
+        pInputText 
+        formControlName="status"
+        autofocus
+        readonly
+        />
+      </div> -->
+
+      <div class="field" >
+        <p-dropdown
+          formControlName="roomType"
+          [options]="roomTypes"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="Select a Room Type"
+        ></p-dropdown>
+        <small
+        class="p-error"
+        *ngIf="
+          this.formRoom.get('roomType')?.invalid &&
+          this.formRoom.get('roomType')?.dirty
+        "
+        >Room Type is required.</small
+      >
+      </div>
+
+      <div class="field">
+        <p-dropdown
+          formControlName="hotel"
+          [options]="hotels"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="Select a Hotel"
+        ></p-dropdown>
+        <small
+        class="p-error"
+        *ngIf="
+          this.formRoom.get('hotel')?.invalid &&
+          this.formRoom.get('hotel')?.dirty
+        "
+        >Hotel is required.</small
+      >
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="closeModal()"
+      icon="pi pi-times"
+      label="Cancel"
+      pAutoFocus
+      severity="danger"
+      [autofocus]="true"
+      class="p-mr-2"
+    ></p-button>
+
+    <p-button
+      (click)="addEditRoom()"
+      icon="pi pi-check"
+      [label]="selectedRoom ? 'Edit' : 'Add'"
+      pAutoFocus
+      [autofocus]="true"
+      [disabled]="formRoom.invalid"
+      class="p-mr-2"
+    ></p-button>
+  </ng-template>
+</p-dialog>

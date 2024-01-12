@@ -1,7 +1,8 @@
-export interface ClientDto {
+export interface Client {
   id:number;
   name: string;
   phone: string;
+  email:string;
   gender: string;
   dni: string;
   category: string;

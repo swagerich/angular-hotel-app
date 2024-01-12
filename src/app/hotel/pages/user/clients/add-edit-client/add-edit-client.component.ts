@@ -9,10 +9,9 @@ import {
   inject,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CardModule } from 'primeng/card';
 import { PrimeNgModule } from '../../../../components/prime-ng/prime-ng.module';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ClientDto } from '../../../../interfaces/client-interface';
+import { Client } from '../../../../interfaces/client-interface';
 import { ClientsService } from '../../../../services/clients.service';
 @Component({
   selector: 'hotel-edit-add-client',
@@ -33,13 +32,13 @@ export default class AddEditClientComponent implements OnChanges {
   public displayAddEditModal: boolean = true;
 
   @Input()
-  public selectedClient! : ClientDto | null;
+  public selectedClient! : Client | null;
 
   @Output()
   public clickClose: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output()
-  public clickAddEditSave: EventEmitter<ClientDto> = new EventEmitter<ClientDto>();
+  public clickAddEditSave: EventEmitter<Client> = new EventEmitter<Client>();
 
   public clientsForms = this.fb.group({
     name: ['', Validators.required],
@@ -62,8 +61,8 @@ export default class AddEditClientComponent implements OnChanges {
     }
   }
 
-  get currentClient(): ClientDto {
-    return this.clientsForms.value as ClientDto;
+  get currentClient(): Client {
+    return this.clientsForms.value as Client;
   }
 
   closeModal(): void {

@@ -1,7 +1,7 @@
 <p-dialog
   [(visible)]="displayAddEditModal"
   [style]="{ width: '500px' }"
-  [header]="selectedRoomType ? 'Edit Client' : 'Add Client'"
+  [header]="selectedRoomType ? 'Edit Room Type' : 'Add Room Type'"
   [modal]="true"
   styleClass="p-fluid"
   (onHide)="closeModal()"
@@ -41,9 +41,10 @@
   <ng-template pTemplate="footer">
     <p-button
       (click)="closeModal()"
-      icon="pi pi-check"
+      icon="pi pi-times"
       label="Cancel"
       pAutoFocus
+      severity="danger"
       [autofocus]="true"
       class="p-mr-2"
     ></p-button>

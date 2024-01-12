@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal, inject } from '@angular/core';
-import { ClientDto } from '../interfaces/client-interface';
-import { toSignal,toObservable } from  '@angular/core/rxjs-interop';
+import { Injectable, inject } from '@angular/core';
+import { Client } from '../interfaces/client-interface';
 import { Observable, delay, of, tap } from 'rxjs';
+import { ClientDto } from '../proyection/clientDto-interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -25,20 +25,20 @@ export class ClientsService {
       );
     }
 
-   saveClient(client:ClientDto) : Observable<ClientDto>{
-    return this.http.post<ClientDto>(`${this.#endPoint}`, client);
+   saveClient(client:Client) : Observable<Client>{
+    return this.http.post<Client>(`${this.#endPoint}`, client);
   }
 
-  getClientById(id:number): Observable<ClientDto>{
-    return this.http.get<ClientDto>(`${this.#endPoint}/${id}`);
+  getClientById(id:number): Observable<Client>{
+    return this.http.get<Client>(`${this.#endPoint}/${id}`);
   }
 
    deleteClientById(id:number): Observable<void>{
     return this.http.delete<void>(`${this.#endPoint}/${id}`);
   }
 
-   updateClient(client:ClientDto, id:number){
-    return this.http.put<ClientDto>(`${this.#endPoint}/${id}`, client);
+   updateClient(client:Client, id:number){
+    return this.http.put<Client>(`${this.#endPoint}/${id}`, client);
   }
 }
 

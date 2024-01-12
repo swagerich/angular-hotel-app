@@ -6,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ClientDto } from '../../../../interfaces/client-interface';
+
 import { ClientsService } from '../../../../services/clients.service';
 import { PrimeNgModule } from '../../../../components/prime-ng/prime-ng.module';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -14,6 +14,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import AddEditClientComponent from '../add-edit-client/add-edit-client.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { ClientDto } from '../../../../proyection/clientDto-interface';
+import { Client } from '../../../../interfaces/client-interface';
 @Component({
   selector: 'hotel-list-client',
   standalone: true,
@@ -34,7 +36,7 @@ export default class ListClientComponent implements OnInit {
 
   selectedProducts!: any[] | null;
 
-  public selectedClient!: ClientDto | null;
+  public selectedClient!: Client | null;
 
   public isLoading = false;
 
@@ -70,7 +72,7 @@ export default class ListClientComponent implements OnInit {
     this.displayAddEditModal = !event;
   }
 
-  showEditModal(client: ClientDto): void {
+  showEditModal(client: Client): void {
     this.displayAddEditModal = true;
     this.selectedClient = client;
   }
@@ -79,7 +81,7 @@ export default class ListClientComponent implements OnInit {
     this.loadClients();
   }
 
-  deleteClient(client: ClientDto) {
+  deleteClient(client: Client) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + client.name + '?',
       header: 'Confirm',

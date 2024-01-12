@@ -20,13 +20,21 @@ export const routes: Routes = [
                 loadComponent:() => import('./hotel/pages/user/user-home/user-home.component')
             },
             {
-                path:'room-type',
+                path:'list-client',
+                loadComponent:() => import('./hotel/pages/user/clients/list-client/list-client.component')
+            }, 
+            {
+                path:'list-room-type',
                 loadComponent:() => import('./hotel/pages/user/rooms-type/list-rooms-type/list-rooms-type.component')
             },
             {
-                path:'list-client',
-                loadComponent:() => import('./hotel/pages/user/clients/list-client/list-client.component')
-            }
+                path:'list-rooms',
+                loadComponent:() => import('./hotel/pages/user/rooms/list-rooms/list-rooms.component')
+            },
+            {
+                path:'list-bookings',
+                loadComponent:() => import('./hotel/pages/user/bookings/list-bookings/list-bookings.component')
+            },
         ]
     },
     {

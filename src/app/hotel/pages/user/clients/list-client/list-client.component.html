@@ -1,5 +1,5 @@
 
-<p-card header="Lista" class="p-card p-mx-auto p-mb-4 p-d-flex p-jc-center">
+<p-card header="Clients" class="p-card p-mx-auto p-mb-4 p-d-flex p-jc-center">
   <!-- <p-toast></p-toast> -->
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
@@ -87,7 +87,7 @@
     </ng-template>
     
   
-    @if (isLoading) {
+    @if (!isLoading) {
       <ng-template pTemplate="body"let-client>
 
         <tr >

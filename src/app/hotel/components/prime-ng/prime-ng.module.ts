@@ -17,6 +17,8 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SkeletonModule } from 'primeng/skeleton';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { CalendarModule } from 'primeng/calendar';
 @NgModule({
   declarations: [],
   exports: [
@@ -37,7 +39,9 @@ import { SkeletonModule } from 'primeng/skeleton';
     AvatarGroupModule,
     InputTextModule,
     MultiSelectModule,
-    SkeletonModule
+    SkeletonModule,
+    KeyFilterModule,
+    CalendarModule
   ],
 })
 export class PrimeNgModule { }

@@ -1,0 +1,99 @@
+<p-dialog
+  [(visible)]="displayAddEditModal"
+  [style]="{ width: '60vw', height: '700px' }"
+  [header]="selectedBooking ? 'Edit Booking' : 'Add Booking'"
+  [modal]="true"
+  styleClass="p-fluid"
+  (onHide)="closeModal()"
+>
+  <ng-template pTemplate="booking">
+    <form [formGroup]="formBooking">
+      <!-- <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-3" *ngIf="product.image" /> -->
+
+      <div class="field">
+        <label for="checkInDate"  class="font-bold block mb-2" >CheckInDate</label>
+        <p-calendar formControlName="checkInDate" [showIcon]="true"></p-calendar>
+        <small
+          class="p-error"
+          *ngIf="
+            this.formBooking.get('checkInDate')?.invalid &&
+            this.formBooking.get('checkInDate')?.dirty
+          "
+          >CheckInDate is required.</small
+        >
+      </div>
+
+      <div class="field" >
+        <label for="checkOutDate" class="font-bold block mb-2" >CheckOutDate</label>
+        <p-calendar formControlName="checkOutDate" [showIcon]="true"></p-calendar>
+        <small
+          class="p-error"
+          *ngIf="
+            this.formBooking.get('checkOutDate')?.invalid &&
+            this.formBooking.get('checkOutDate')?.dirty
+          "
+          >CheckOutDate is required.</small
+        >
+      </div>
+
+      <div class="field">
+        <p-dropdown
+          formControlName="client"
+          [options]="clients"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="Select a Client"
+        ></p-dropdown>
+        <small
+        class="p-error"
+        *ngIf="
+          this.formBooking.get('client')?.invalid &&
+          this.formBooking.get('client')?.dirty
+        "
+        >Client is required.</small
+      >
+      </div>
+
+      <div class="field" >
+        <p-dropdown
+          formControlName="room"
+          [options]="rooms"
+          optionLabel="roomNumber"
+          [showClear]="true"
+          placeholder="Select a Room"
+        ></p-dropdown>
+        <small
+        class="p-error"
+        *ngIf="
+          this.formBooking.get('room')?.invalid &&
+          this.formBooking.get('room')?.dirty
+        "
+        >Room is required.</small
+      >
+      </div>
+
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="closeModal()"
+      icon="pi pi-times"
+      label="Cancel"
+      pAutoFocus
+      severity="danger"
+      [autofocus]="true"
+      class="p-mr-2"
+    ></p-button>
+
+    <p-button
+      (click)="addEditRoom()"
+      icon="pi pi-check"
+      [label]="selectedBooking ? 'Edit' : 'Add'"
+      pAutoFocus
+      [autofocus]="true"
+      [disabled]="formBooking.invalid"
+      class="p-mr-2"
+    ></p-button>
+  </ng-template>
+</p-dialog>

@@ -73,6 +73,7 @@ export class AddEditRoomTypeComponent implements OnChanges {
           life: 3000,})
         }
       })
+      console.log(this.currentRoomType)
     }else{
       this.roomTypeService.updateRoomType(this.currentRoomType,this.selectedRoomType.id).subscribe({
         next:(data)=>{

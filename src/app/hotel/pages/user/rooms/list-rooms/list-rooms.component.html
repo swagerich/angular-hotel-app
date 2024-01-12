@@ -1,0 +1,118 @@
+<p-card header="Rooms" class="p-card p-mx-auto p-mb-4 p-d-flex p-jc-center">
+    <!-- <p-toast></p-toast> -->
+    <p-toolbar styleClass="mb-4 gap-2">
+      <ng-template pTemplate="left">
+        <button
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success mr-2"
+          (click)="showAddModal()"
+        ></button>
+        <!-- <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
+      </ng-template>
+    </p-toolbar>
+  
+    <!-- @if(clients.length > 0){ -->
+    <p-table
+      #dt
+      [value]="rooms"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['name', 'country.name', 'representative.name']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [rowHover]="true"
+      dataKey="id"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [rows]="5"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+    >
+
+          <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="roomNumber" style="min-width: 10rem">
+            Room Number <p-sortIcon field="roomNumber"></p-sortIcon>
+          </th>
+          <th pSortableColumn="price" style="min-width: 10rem">
+            Price <p-sortIcon field="price"></p-sortIcon>
+          </th>
+          <th pSortableColumn="capacity" style="min-width: 10rem">
+            Capacity <p-sortIcon field="capacity"></p-sortIcon>
+          </th>
+          <th pSortableColumn="status" style="min-width: 10rem">
+            Status <p-sortIcon field="status"></p-sortIcon>
+          </th>
+          <th pSortableColumn="roomType" style="min-width: 10rem">
+            Room Type <p-sortIcon field="roomType"></p-sortIcon>
+          </th>
+          <th pSortableColumn="hotel" style="min-width: 10rem">
+            Hotel <p-sortIcon field="hotel"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      
+      
+      <!-- verificar la condicion -->
+      @if (!isLoading) {
+        <ng-template pTemplate="body" let-rooms>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="rooms"></p-tableCheckbox>
+            </td>
+            <td>{{ rooms.roomNumber }}</td>
+            <td>{{ rooms.price }}</td>
+            <td>{{ rooms.capacity }}</td>
+            <td>
+              <p-tag
+                [value]="rooms.status"
+                [severity]="getSeverity(rooms.status)"
+              ></p-tag>
+            </td>
+            <td>{{ rooms.roomType.name }}</td>
+            <td>{{ rooms.hotel.name }}</td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-success mr-2"
+                (click)="showEditModal(rooms)"
+              ></button>
+            </td>
+          </tr>
+        
+        </ng-template>
+      }@else {
+        <ng-template  pTemplate="body"let-client>
+          <tr >
+            <td><p-skeleton></p-skeleton></td>
+            <td><p-skeleton></p-skeleton></td>
+            <td><p-skeleton></p-skeleton></td>
+          </tr>
+        </ng-template>
+  
+      }
+        
+    </p-table>
+  <!-- }@else {
+    <div class="flex align-items-center justify-content-center">
+      <h5 class="m-0">cargando..!</h5>
+    </div>
+  } -->
+  </p-card>
+  <!-- DIALOGO -->
+  <hotel-add-edit-room
+    [displayAddEditModal]="displayAddEditModal"
+    (clickClose)="hideAddModal($event)"
+    [selectedRoom]="selectedRoom"
+    (clickAddEditSave)="saveOrEditList()"
+  ></hotel-add-edit-room>
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  
