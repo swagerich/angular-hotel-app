@@ -68,8 +68,16 @@ export default class ListRoomsComponent implements OnInit {
     this.displayAddEditModal = true;
   }
 
-  getSeverity(room: Room): string | undefined {
-    return undefined;
+  getSeverity(room: string): string {
+    let  status = room;
+    switch (status) {
+      case 'AVAILABLE':
+        return 'success';
+      case 'OCCUPIED':
+        return 'danger';
+      default:
+        return '';
+    }
   }
 
 }

@@ -19,6 +19,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SkeletonModule } from 'primeng/skeleton';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { CalendarModule } from 'primeng/calendar';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 @NgModule({
   declarations: [],
   exports: [
@@ -41,7 +42,8 @@ import { CalendarModule } from 'primeng/calendar';
     MultiSelectModule,
     SkeletonModule,
     KeyFilterModule,
-    CalendarModule
+    CalendarModule,
+    TieredMenuModule
   ],
 })
 export class PrimeNgModule { }

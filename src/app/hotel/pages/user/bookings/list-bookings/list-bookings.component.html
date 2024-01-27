@@ -1,5 +1,4 @@
-<p-card header="Rooms" class="p-card p-mx-auto p-mb-4 p-d-flex p-jc-center">
-    <!-- <p-toast></p-toast> -->
+<p-card header="Booking" class="p-card p-mx-auto p-mb-4 p-d-flex p-jc-center">
     <p-toolbar styleClass="mb-4 gap-2">
       <ng-template pTemplate="left">
         <button
@@ -64,12 +63,13 @@
             Daily Price <p-sortIcon field="dailyPrice"></p-sortIcon>
           </th>
           <th></th>
+          <th></th>
         </tr>
       </ng-template>
       
       
       <!-- verificar la condicion -->
-      @if (!isLoading) {
+      <!-- @if (!isLoading) { -->
         <ng-template pTemplate="body" let-booking>
           <tr>
             <td>
@@ -77,8 +77,8 @@
             </td>
             <td>{{ booking.name }}</td>
             <td>{{ booking.phone }}</td>
-            <td>{{ booking.checkInDate | date:'mediumDate' }}</td>
-            <td>{{ booking.checkOutDate | date: 'mediumDate' }}</td>
+            <td>{{ booking.checkInDate }}</td>
+            <td>{{ booking.checkOutDate}}</td>
             <td>{{ booking.roomNumber }}</td>
             <td>{{ booking.totalPrice }}</td>
             <td>{{ booking.nroOfDays }}</td>
@@ -89,6 +89,7 @@
                 [severity]="getSeverity(rooms.status)"
               ></p-tag>
             </td> -->
+
             <td>
               <button
                 pButton
@@ -98,10 +99,19 @@
                 (click)="showEditModal(booking)"
               ></button>
             </td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger mr-2"
+                (click)="deleteBooking(booking)"
+              ></button>
+            </td>
           </tr>
         
         </ng-template>
-      }@else {
+      <!-- }@else {
         <ng-template  pTemplate="body"let-client>
           <tr >
             <td><p-skeleton></p-skeleton></td>
@@ -110,7 +120,7 @@
           </tr>
         </ng-template>
   
-      }
+      } -->
         
     </p-table>
   <!-- }@else {

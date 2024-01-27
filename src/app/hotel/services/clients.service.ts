@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Client } from '../interfaces/client-interface';
 import { Observable, delay, of, tap } from 'rxjs';
@@ -39,6 +39,28 @@ export class ClientsService {
 
    updateClient(client:Client, id:number){
     return this.http.put<Client>(`${this.#endPoint}/${id}`, client);
+  }
+
+  deleteAllClientById(ids:number[]): Observable<void>{
+    const params = new HttpParams().set('ids', ids.join(','));
+    console.log(params)
+    return this.http.delete<void>(`${this.#endPoint}/delete-all`,{
+      headers:{
+        'Content-Type':'x-www-form-urlencoded'
+      },
+      params:params
+    });
+  }
+
+  exportJson(ids:number[]): Observable<Blob>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+    return this.http.get<Blob>(`${this.#endPoint}/download?ids=${ids}`, {
+      headers:headers,
+      responseType: 'blob' as 'json'
+    });
   }
 }
 

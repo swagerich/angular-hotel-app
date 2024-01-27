@@ -70,6 +70,7 @@ export class AddEditRoomComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     if (this.selectedRoom) {
       this.formRoom.patchValue(this.selectedRoom);
+    console.log(this.selectedRoom);
     } else {
       this.formRoom.reset();
     }

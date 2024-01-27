@@ -12,7 +12,11 @@
 
       <div class="field">
         <label for="checkInDate"  class="font-bold block mb-2" >CheckInDate</label>
-        <p-calendar formControlName="checkInDate" [showIcon]="true"></p-calendar>
+        <p-calendar formControlName="checkInDate" dateFormat="dd-mm-yy" [showIcon]="true">
+          <!-- <ng-template pTemplate="date" let-date>
+            <span [ngStyle]="{textDecoration: (date.day < 21 && date.day > 10) ? 'line-through' : 'inherit'}">{{date.day}}</span>
+        </ng-template> -->
+        </p-calendar>
         <small
           class="p-error"
           *ngIf="
@@ -25,7 +29,7 @@
 
       <div class="field" >
         <label for="checkOutDate" class="font-bold block mb-2" >CheckOutDate</label>
-        <p-calendar formControlName="checkOutDate" [showIcon]="true"></p-calendar>
+        <p-calendar formControlName="checkOutDate" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
         <small
           class="p-error"
           *ngIf="
@@ -33,6 +37,11 @@
             this.formBooking.get('checkOutDate')?.dirty
           "
           >CheckOutDate is required.</small
+        >
+        <small
+          class="p-error"
+          *ngIf="this.formBooking.hasError('dateComparison') && formBooking.get('checkOutDate')?.dirty"
+          >La fecha de salida no puede ser menor que la fecha de entrada. </small
         >
       </div>
 

@@ -8,8 +8,8 @@ export interface RoomsType{
 
 
 export enum RoomStatus {
-    AVAILABLE,
-    OCCUPIED,
-    MAINTENANCE
+    AVAILABLE="AVAILABLE",
+    OCCUPIED="OCCUPIED",
+    MAINTENANCE="MAINTENANCE",
   }
   

@@ -21,7 +21,6 @@ import { ClientsService } from '../../../../services/clients.service';
   styleUrl: './add-edit-client.component.css',
 })
 export default class AddEditClientComponent implements OnChanges {
- 
   private fb = inject(FormBuilder);
 
   private clientsService = inject(ClientsService);
@@ -32,7 +31,7 @@ export default class AddEditClientComponent implements OnChanges {
   public displayAddEditModal: boolean = true;
 
   @Input()
-  public selectedClient! : Client | null;
+  public selectedClient!: Client | null;
 
   @Output()
   public clickClose: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -47,16 +46,20 @@ export default class AddEditClientComponent implements OnChanges {
     gender: ['', Validators.required],
     dni: ['', Validators.required],
     category: ['', Validators.required],
+    status: ['', Validators.required],
   });
 
   public categories = ['Adult', 'Child', 'Junior', 'Senior', 'Student'];
 
   public genders = ['Male', 'Female'];
 
+  public status = ['ACTIVE', 'INACTIVE'];
+
   ngOnChanges(): void {
-    if(this.selectedClient){
+    if (this.selectedClient) {
       this.clientsForms.patchValue(this.selectedClient);
-    }else{
+      console.log(this.selectedClient)
+    } else {
       this.clientsForms.reset();
     }
   }
@@ -71,7 +74,7 @@ export default class AddEditClientComponent implements OnChanges {
   }
 
   addEditClient(): void {
-    if(!this.selectedClient){
+    if (!this.selectedClient) {
       this.clientsService.saveClient(this.currentClient).subscribe((data) => {
         this.clickAddEditSave.emit(data);
         this.messageService.add({
@@ -82,18 +85,23 @@ export default class AddEditClientComponent implements OnChanges {
         });
         this.closeModal();
       });
-    }else{
-      this.clientsService.updateClient(this.currentClient,this.selectedClient.id).subscribe((data) => {
-        this.clickAddEditSave.emit(data);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Client Updated',
-          life: 3000,
+
+      // else if (this.clientsForms.get('status')?.dirty) {
+      //   console.log('entro aqui');
+      // }
+    }  else {
+      this.clientsService
+        .updateClient(this.currentClient, this.selectedClient.id!)
+        .subscribe((data) => {
+          this.clickAddEditSave.emit(data);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Client Updated',
+            life: 3000,
+          });
+          this.closeModal();
         });
-        this.closeModal();
-      });
     }
-   
   }
 }

@@ -10,27 +10,24 @@ import { AddEditRoomTypeComponent } from '../add-edit-room-type/add-edit-room-ty
 @Component({
   selector: 'app-list-rooms-type',
   standalone: true,
-  imports: [PrimeNgModule,CommonModule,AddEditRoomTypeComponent],
+  imports: [PrimeNgModule, CommonModule, AddEditRoomTypeComponent],
   templateUrl: './list-rooms-type.component.html',
-  styleUrl: './list-rooms-type.component.css'
+  styleUrl: './list-rooms-type.component.css',
 })
 export default class ListRoomsTypeComponent implements OnInit {
-
-
   private roomTypeService = inject(RoomTypeService);
 
   private messageService = inject(MessageService);
 
   private confirmationService = inject(ConfirmationService);
 
-  public selectedRoomType! :RoomsType | null;
+  public selectedRoomType!: RoomsType | null;
 
-  public roomsTypes : RoomsType[] = [];
+  public roomsTypes: RoomsType[] = [];
 
-  public isLoading:boolean = false;
+  public isLoading: boolean = false;
 
   public displayAddEditModal: boolean = false;
-
 
   ngOnInit(): void {
     this.loadRommTypes();
@@ -38,39 +35,48 @@ export default class ListRoomsTypeComponent implements OnInit {
 
   loadRommTypes(): void {
     this.roomTypeService.getRoomsTypes().subscribe({
-      next:(response) =>{
-        this.roomsTypes = response
+      next: (response) => {
+        this.roomsTypes = response;
       },
-      error:(e:HttpErrorResponse) => {
-        this.messageService.add({  severity: 'error',
-        summary: 'Successful',
-        detail: e.message,
-        life: 3000,})
-      }
+      error: (e: HttpErrorResponse) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Successful',
+          detail: e.message,
+          life: 3000,
+        });
+      },
     });
   }
 
-
-  hideAddModal(event:any):void{
+  hideAddModal(event: any): void {
     this.displayAddEditModal = !event;
   }
 
-  showAddModal():void{
+  showAddModal(): void {
     this.displayAddEditModal = true;
     this.selectedRoomType = null;
   }
-
 
   saveOrEditList(): void {
     this.loadRommTypes();
   }
 
-  showEditModal(roomType:RoomsType) :void{
+  showEditModal(roomType: RoomsType): void {
     this.displayAddEditModal = true;
     this.selectedRoomType = roomType;
   }
 
-  getSeverity(roomType:RoomsType) : string | undefined{
-    return undefined;
+  getSeverity(roomType: string) {
+    let status = roomType;
+    switch (status) {
+      case 'AVAILABLE':
+        return 'success';
+      case 'OCCUPIED':
+        return 'danger';
+      default:
+        'success';
+    }
+    return status;
   }
 }

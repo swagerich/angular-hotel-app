@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   Signal,
+  ViewChild,
   computed,
   inject,
   signal,
@@ -15,7 +16,9 @@ import AddEditClientComponent from '../add-edit-client/add-edit-client.component
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ClientDto } from '../../../../proyection/clientDto-interface';
-import { Client } from '../../../../interfaces/client-interface';
+import { Client, ClientStatus } from '../../../../interfaces/client-interface';
+import { tap } from 'rxjs';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'hotel-list-client',
   standalone: true,
@@ -34,14 +37,15 @@ export default class ListClientComponent implements OnInit {
 
   public clients: ClientDto[] = [];
 
-  selectedProducts!: any[] | null;
+  public selectedClients!: ClientDto[] | null;
 
   public selectedClient!: Client | null;
 
   public isLoading = false;
 
-  submitted: boolean = false;
+  public Delete : any;
 
+  public disabledd = false;
   // public clientsSignal:Signal<ClientDto[]> = this.clientsService.getClients();
 
   ngOnInit() {
@@ -51,8 +55,8 @@ export default class ListClientComponent implements OnInit {
   loadClients(): void {
     this.clientsService.getClients().subscribe({
       next: (data) => {
-        this.clients = data;
-        this.isLoading = true;
+          this.clients = data;
+          // this.isLoading = true;
       },
       error:(e:HttpErrorResponse) =>{
         this.messageService.add({  severity: 'error',
@@ -102,42 +106,65 @@ export default class ListClientComponent implements OnInit {
     });
   }
 
-  deleteSelectedProducts() {
-    // this.confirmationService.confirm({
-    //     message: 'Are you sure you want to delete the selected products?',
-    //     header: 'Confirm',
-    //     icon: 'pi pi-exclamation-triangle',
-    //     accept: () => {
-    //         this.products = this.products.filter((val) => !this.selectedProducts?.includes(val));
-    //         this.selectedProducts = null;
-    //         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    //     }
-    // });
+  deleteSelectedClients() {
+    let ids = this.selectedClients?.map(client => client.id!);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the selected clients?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.clientsService.deleteAllClientById(ids!)
+        .subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'Clients Deleted',
+              life: 3000,
+            });
+            this.loadClients();
+          },
+        });
+      },
+    });
+
   }
 
+  exportClientsJson():void { 
+    if(this.selectedClients){
+      let ids = this.selectedClients?.map(client => client.id!);
+      this.clientsService.exportJson(ids).subscribe({
+        next:(response:Blob) =>{
+          const blob = new Blob([response], { type: 'application/json' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = this.generateUniqueFileName();
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+      }});
+    }
+  }
+
+   generateUniqueFileName(): string {
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
   
+    const timestamp = formatter.formatToParts(new Date())
+      .map((part) => part.value)
+      .join('');
+  
+    return `clientes_${timestamp}.json`;
+  }
 
-  // findIndexById(id: string): number {
-  //     let index = -1;
-  //     for (let i = 0; i < this.clients.length; i++) {
-  //         if (this.clients[i].id === id) {
-  //             index = i;
-  //             break;
-  //         }
-  //     }
-
-  //     return index;
-  // }
-
-  // createId(): string {
-  //   let id = '';
-  //   var chars =
-  //     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  //   for (var i = 0; i < 5; i++) {
-  //     id += chars.charAt(Math.floor(Math.random() * chars.length));
-  //   }
-  //   return id;
-  // }
 
   getSeverity(status: string) {
     let currentStatus = status;

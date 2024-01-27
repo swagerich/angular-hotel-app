@@ -6,12 +6,12 @@ export interface Client {
   gender: string;
   dni: string;
   category: string;
-  clientStatus: ClientStatus;
+  status: ClientStatus;
   bookings: number;
   revenue: number;
 }
 
 export enum ClientStatus {
-  ACTIVE,
-  INACTIVE,
+  ACTIVE="ACTIVE",
+  INACTIVE="INACTIVE",
 }

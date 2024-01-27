@@ -9,7 +9,7 @@ import {
   inject,
 } from '@angular/core';
 import { PrimeNgModule } from '../../../../components/prime-ng/prime-ng.module';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 
 import { Room } from '../../../../interfaces/room-interface';
 import { ClientDto } from '../../../../proyection/clientDto-interface';
@@ -18,6 +18,8 @@ import { RoomsService } from '../../../../services/rooms.service';
 import { firstValueFrom } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BookingsService } from '../../../../services/bookings.service';
+import { Booking } from '../../../../interfaces/booking-interface';
+import { BookingDto } from '../../../../proyection/bookingDto-interface';
 
 @Component({
   selector: 'hotel-add-edit-booking',
@@ -38,7 +40,7 @@ export class AddEditBookingComponent implements OnChanges, OnInit {
   private fb = inject(FormBuilder);
 
   @Input()
-  public selectedBooking: any;
+  public selectedBooking!: BookingDto  | null;
 
   @Input()
   public displayAddEditModal: boolean = true;
@@ -47,7 +49,7 @@ export class AddEditBookingComponent implements OnChanges, OnInit {
   public clickClose: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output()
-  public clickAddEditSave: EventEmitter<any> = new EventEmitter<any>();
+  public clickAddEditSave: EventEmitter<Booking> = new EventEmitter<Booking>();
 
   //por ahora estoy usando el clientDto de la proyeccion (mas luego voy a probar de la entidad)
   public clients: ClientDto[] = [];
@@ -55,25 +57,42 @@ export class AddEditBookingComponent implements OnChanges, OnInit {
   public rooms: Room[] = [];
 
   public formBooking: FormGroup = this.fb.group({
-    checkInDate: [''],
-    checkOutDate: [''],
-    client: [''],
-    room: [''],
-  });
+    checkInDate: ['',Validators.required],
+    checkOutDate: ['',Validators.required],
+    client: ['',Validators.required],
+    room: ['',Validators.required],
+  },{validator: this.isDateValid()});
+
 
   ngOnInit(): void {
     this.loadClientsAndRooms();
   }
 
-  ngOnChanges(): void {}
+  /**
+   * 
+   * OJO AQUI NO ME SETEA LOS VALORES AL FORMULARIO CUANDO SE EDITA
+   */
+  ngOnChanges(): void {
+    if(this.selectedBooking ){
+      // const checkInDate = this.convertDate(this.selectedBooking.checkInDate);
+      // const checkOutDate = this.convertDate(this.selectedBooking.checkOutDate);
+      this.formBooking.patchValue({
+        checkInDate: this.selectedBooking.checkInDate,
+        checkOutDate: this.selectedBooking.checkOutDate,
+      });
+    }else{
+       this.formBooking.reset();
+    }
+  }
 
   async loadClientsAndRooms(): Promise<any> {
     let clients = await firstValueFrom(this.clientsService.getClients());
     let rooms = await firstValueFrom(this.roomService.getRooms());
     try {
       if (clients.length > 0 && rooms.length > 0) {
+      let roomsActive = rooms.filter((room) => room.status === 'AVAILABLE');
         this.clients = clients;
-        this.rooms = rooms;
+        this.rooms = roomsActive;
       }
     } catch (error: HttpErrorResponse | any) {
       console.log(error.message);
@@ -107,8 +126,22 @@ export class AddEditBookingComponent implements OnChanges, OnInit {
           console.log(error.message);
         },
       })
+    }else{
+      console.log(this.formBooking.value);
     }
+  }
 
+  isDateValid(): ValidatorFn {
+    return (group: AbstractControl): { [key: string]: any } | null => {
+      const checkInDate = group.get('checkInDate')?.value;
+      const checkOutDate = group.get('checkOutDate')?.value;
+
+      if (checkInDate && checkOutDate && checkInDate > checkOutDate) {
+        return { 'dateComparison': true }; 
+      } 
+       return null;
+      
+    };
   }
 
   private convertDate(date: Date): string {
@@ -117,6 +150,5 @@ export class AddEditBookingComponent implements OnChanges, OnInit {
       month: 'numeric',
       year: 'numeric',
     }).split('/').join('-');
-
   }
 }
