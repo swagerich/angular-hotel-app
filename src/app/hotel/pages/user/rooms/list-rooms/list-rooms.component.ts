@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { PrimeNgModule } from '../../../../components/prime-ng/prime-ng.module';
 import { Room } from '../../../../interfaces/room-interface';
 import { RoomsService } from '../../../../services/rooms.service';
 import { firstValueFrom } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddEditRoomComponent } from '../add-edit-room/add-edit-room.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { RoomStatus } from '../../../../interfaces/roomType-interface';
+import { TieredMenu } from 'primeng/tieredmenu';
 
 @Component({
   selector: 'app-list-rooms',
@@ -31,8 +32,6 @@ export default class ListRoomsComponent implements OnInit {
   public rooms: Room[] = [];
 
   public isLoading: boolean = false;
-
-
 
   ngOnInit(): void {
     this.loadRooms();

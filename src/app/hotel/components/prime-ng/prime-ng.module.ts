@@ -20,6 +20,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { CalendarModule } from 'primeng/calendar';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { ChartModule } from 'primeng/chart';
 @NgModule({
   declarations: [],
   exports: [
@@ -43,7 +44,8 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     SkeletonModule,
     KeyFilterModule,
     CalendarModule,
-    TieredMenuModule
+    TieredMenuModule,
+    ChartModule
   ],
 })
 export class PrimeNgModule { }

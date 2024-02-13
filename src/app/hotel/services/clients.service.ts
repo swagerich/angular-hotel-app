@@ -62,5 +62,10 @@ export class ClientsService {
       responseType: 'blob' as 'json'
     });
   }
+
+  getCountClientsByDates(starDate:string,lastDate:string) : Observable<any>{
+    return this.http.get<any>(`${this.#endPoint}/counts-users-by-date?start-date=${starDate}&last-date=${lastDate}`);
+  }
+
 }
 

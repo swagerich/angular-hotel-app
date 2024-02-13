@@ -29,4 +29,8 @@ export class BookingsService {
   deleteBooking(id: number): Observable<void> {
     return this.http.delete<void>(`${this.#endPoint}/${id}`);
   }
+
+  getBookingCountByDate(month:string, year:string): Observable<any>{
+    return this.http.get<any>(`${this.#endPoint}/statistical?month=${month}&anio=${year}`);
+  }
 }

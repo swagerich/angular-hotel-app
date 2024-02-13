@@ -1,0 +1,64 @@
+
+<form [formGroup]="formGroup">
+  <div class="grid">
+    <div class="col-6">
+
+
+      <div class="chart-container">
+
+        <span class="p-float-label mb-3">
+          <p-calendar
+            [showButtonBar]="true"
+            view="month"
+            formControlName="monthAnio"
+            (onClose)="getBookingCountByDate()"
+            dateFormat="mm/yy"
+            [readonlyInput]="true"
+          ></p-calendar>
+          <label for="birth_date">Selecciona el mes/anio</label>
+        </span>
+
+        <div class="p-col-12 p-md-6 p-lg-6">
+          <p-card>
+            <h5 class="p-mb-3">Ingreso Totales y Booking</h5>
+            <div class="p-d-flex p-jc-center">
+              <p-chart type="line" [data]="data" [options]="options"></p-chart>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="chart-container">
+
+        <span class="p-float-label mb-3">
+          <p-calendar
+            inputId="birth_date"
+            [showButtonBar]="true"
+            (onClose)="getClientsByDate()"
+            formControlName="rangeDates"
+            selectionMode="range"
+            [readonlyInput]="true"
+          ></p-calendar>
+          <label for="birth_date">Selecciona Un Rango de fecha</label>
+        </span>
+
+        <div class="p-col-12 p-md-6 p-lg-6">
+          <p-card>
+            <h5 class="p-mb-3">
+              Registros de Clientes Por Fechas
+            </h5>
+            <div class="p-d-flex p-jc-center">
+              <p-chart
+                type="bar"
+                [data]="basicData"
+                [options]="basicOptions"
+              ></p-chart>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
